@@ -14,7 +14,7 @@
 
     A lo largo del documento encontraremos recuadros que requieren de una especial atención de los lectores:
 
-> **ACTIVIDADES:** son consignas de actividades para realizar la práctica con Qgis, PGAdmin y las otras herramientas acompañando la lectura. En la presente clase hay 5 actividades para resolver. 
+> **ACTIVIDADES:** son consignas de actividades para realizar la práctica con Qgis, PGAdmin y las otras herramientas acompañando la lectura. En la presente clase hay 2 actividades para resolver. 
 
 > **¡IMPORTANTE!:** Indica una actividad que no debe omitirse para poder desarrollar correctamente la práctica de la clase.
 
@@ -295,3 +295,157 @@ columnas también lo son. Es por eso que podemos encontrarlos desplegando aún m
 el árbol de objetos.
 
 ![Columnas](images/24_columnas.png)
+
+
+# 4 SQL. Comandos de selección
+
+El lenguaje más habitual para construir las consultas a bases de datos
+relacionales es *SQL* (Structured Query Language) o Lenguaje Estructurado de
+Consultas, un estándar implementado por los principales motores o sistemas de
+gestión de bases de datos relacionales.
+
+Veremos los comandos más sencillos que son aquellos que permiten realizar una
+selección de campos de las tablas.
+
+Para poder ejecutar los comandos, necesitamos entrar a la **Herramienta de consulta**
+con el botón ![Boton Query](images/25_consulta.png)
+
+![Panel de consultas](images/26_panel_consultas.png)
+
+En el sector del Editor de consultas es donde se escriben los comandos. En la
+parte inferior se muestran los resultados, y el ángulo superior derecho se utiliza para
+escribir consultas en borrador, o anotaciones que sirven para armarlas consultas.
+La consulta de selección tiene la siguiente estructura:
+> **SELECT campos FROM tablas**
+
+campos es la enumeración de campos que queremos que nos devuelva la consulta, y
+tablas es el origen de estos campos.
+
+Vamos a escribir la consulta que equivale a la acción de visualizar los campos
+de nombre de provincia y población del año 2010 de la tabla “censo2010”
+> **SELECT nom_prov, pob2010 FROM censo2010**
+
+Escribimos la consulta en el sector superior del Constructor de consultas, y
+luego presionamos el botón **Ejecutar consultas** ![Ejecutar consulta](images/27_ejecutar.png).
+
+![Ver resultados](images/28_resultados.png)
+
+Como vemos, el resultado es el contenido de los campos “nom_prov” y
+“pob2010” de la tabla “censo2010”.
+Si deseamos traer todos los campos, podemos utilizar el asterisco “*” como
+comodín.
+
+> **SELECT * FROM censo2010**
+
+![Ver todos los campos](images/29_asterisco.png)
+
+Como vemos arriba, esta consulta nos devuelve todos los campos de la tabla
+“censo2010”.
+
+Dentro de la misma consulta, también se pueden realizar operaciones
+matemáticas con el contenido de los campos o entre campos.
+
+Por ejemplo, podemos conocer la diferencia de población entre el año 2010 y el
+año 2001 para cada provincia:
+
+> **SELECT nom_prov, pob2010 - pob2001 FROM censo2010**
+
+La operación matemática entre los dos campos (**pob2010 - pob2001**) se
+convierte en un solo campo que contiene el resultado de la resta.
+
+![Resta](images/30_resta.png)
+
+Como el campo que resulta de la operación matemática no existía previamente,
+carece de nombre, por lo tan en el resultado aparece como *“?column?”*
+
+Si deseamos darle un nombre a este nuevo campo, o a cualquier otro campo,
+podemos utilizar un Alias. El alias se agrega luego del campo.
+
+> **SELECT nom_prov, pob2010 - pob2001 as poblacion FROM censo2010**
+
+![Alias](images/31_alias.png)
+
+> **ACTIVIDAD 1.** Escriba la consulta que trae el código de la provincia y la
+densidad de población por kilómetro cuadrado para el año 2010 (población
+del 2010 / superficie).
+Colocar el alias “densidad” al campo correspondiente.
+
+
+# 5 Visualización de información geográfica de la base desde Qgis
+
+Vamos a agregar una nueva tabla, pero esta vez será una tabla con datos
+geométricos, para empezar a conocer como se componen.
+
+Restauramos el archivo [ciudades.backup](material/ciudades.backup) disponible en el material de práctica, y veremos que se agrega una nueva tabla llamada ciudades.
+
+> Si no aparece, clic derecho sobre el objeto *Tablas* y *Actualizar*
+
+Si visualizamos la tabla con el botón *Ver los datos* del objeto seleccionado
+aparece el campo “the_geom” con el tipo de dato geometry.
+
+![Geom](images/32_geom.png)
+
+Este campo es el que contiene los datos geométricos de las entidades
+representadas en las tablas, es decir, las ciudades. Pero los datos están almacenados
+en un formato difícil de interpretar. Por esto le aplicaremos una función al campo
+geométrico para saber qué hay almacenado allí.
+
+> **SELECT nombre, st_astext(the_geom) FROM ciudades**
+
+![Geom](images/33_astext.png)
+
+La consulta trae como resultado el contenido del campo geométrico pero
+traducido a un lenguaje que podemos comprender.
+
+> CORDOBA POINT(-64.1686873389682 -31.4087155839202)
+
+En primer lugar “POINT” indica el tipo de geometría. Si recordamos, los tipos
+de geometría que ya conocemos son las líneas, los puntos y los polígonos. Luego
+viene encerrado entre paréntesis la coordenada del punto en donde se encuentra la
+ciudad, expresado en grados decimales en este caso.
+
+Estos mismos datos pueden ser visualizados desde Qgis. Esto se lograr de 2 maneras:
+-   a) Desde la barra superior seleccionando *Capa > Añadir capa > Añadir capas PostGis*.
+-   b) Utilizando el icono ![Agregar capa](images/34_postgis.png) de acceso directo a *PostgreSQL* en el panel lateral.
+
+Esto nos abre una ventana donde se gestionan nuestras conexiones a PostgreSQL, hacemos clic en el botón **Nueva** para agregar una conexión a nuestra base de datos llamada **curso**.
+
+![Geom](images/35_conectar.png)
+
+
+Esto nos abre una ventana que ya nos es familiar. Se trata de los parámetros
+para conectarnos a la base de datos, al igual que lo hicimos desde **pgAdmin**.
+
+![Geom](images/36_credenciales.png)
+
+Luego de aceptar, volveremos a la ventana anterior, en donde ya nos podemos conectar a la base y ver sus tablas. Presionamos el botón *Conectar*.
+
+Luego de *Conectar* vamos a poder ver un listado de todas las tablas con datos geométricos de nuestra base. Seleccionamos la tabla *ciudades* y hacemos clic en **Añadir**
+
+![Ver capas](images/37_capas.png)
+
+Al hacer clic en aceptar vemos que se agrega una capa, al igual que cuando
+añadimos un archivo shapefile, o de cualquier otro formato.
+
+![Añadir capa](images/38_ciudades.png)
+
+A partir de allí podemos continuar trabajando como lo haríamos con cualquier
+capa. Por ejemplo, se puede cambiar la simbología o etiquetar.
+
+![Añadir capa](images/39_etiquetas.png)
+
+> **ACTIVIDAD 2.** Ejecutar la consulta que se encuentra en el archivo
+[“autopistas.sql”](material/autopistas.sql) desde el constructor de consultas arbitrarias
+. (abrir archivo autopistas.sql desde allí).
+Visualizar la capa de autopistas desde Qgis y cambiar su simbología.
+Para tener en cuenta: la capa de autopistas tiene el EPSG 4326
+
+## 6.1 Bibliografía
+-   OLAYA, Víctor. (2011). Sistemas de Información Geográfica. Versión 1.0, Rev. 24 de
+marzo de 2011. Proyecto “Libro Libre SIG”.
+http://forge.osor.eu/docman/view.php/13/577/Libro_SIG.zip
+
+-   THE POSTGIS TEAM. Manual de PostGIS 1.5.3.
+http://www.postgis.org/download/postgis-1.5.3.pdf
+
+-   OBE, Regina y HSU Leo. (2011). PostGIS in Action. Editorial Manning. Stamford.
