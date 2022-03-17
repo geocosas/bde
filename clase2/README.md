@@ -129,6 +129,7 @@ el contenido de los campos geométricos. Vimos que en realidad, l
 El dato geométrico de la entidad representada equivale al conjunto de coordenadas
 que componen la figura geométrica. Los tipos de datos geométricos están
 relacionados con esta descripción de las coordenadas.
+
 El tipo POINT supone un solo punto, representado por una sola coordenada:
 
 ![Punto](images/9_point.png)
@@ -136,9 +137,9 @@ El tipo POINT supone un solo punto, representado por una sola coordenada:
 
 Esto podría utilizarse para representar a una ciudad a una escala nacional, por
 ejemplo.
+
 El tipo LINE implica dos coordenadas que representan a una recta, por ejemplo un
 tramo de ruta recta entre dos ciudades:
-
 
 ![Linea](images/10_line.png)
 
