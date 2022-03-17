@@ -297,7 +297,7 @@ el árbol de objetos.
 ![Columnas](images/24_columnas.png)
 
 
-# 4 SQL. Comandos de selección
+## 4 SQL. Comandos de selección
 
 El lenguaje más habitual para construir las consultas a bases de datos
 relacionales es *SQL* (Structured Query Language) o Lenguaje Estructurado de
@@ -371,7 +371,7 @@ del 2010 / superficie).
 Colocar el alias “densidad” al campo correspondiente.
 
 
-# 5 Visualización de información geográfica de la base desde Qgis
+## 5 Visualización de información geográfica de la base desde Qgis
 
 Vamos a agregar una nueva tabla, pero esta vez será una tabla con datos
 geométricos, para empezar a conocer como se componen.

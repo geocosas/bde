@@ -116,6 +116,6 @@ CREATE INDEX autopistas_the_geom_gist ON autopistas USING gist (the_geom);
 --
 -- PostgreSQL database dump complete
 --
-INSERT INTO geometry_columns VALUES ('', 'public', 'autopistas', 'the_geom', 2, 4326, 'MULTILINESTRING');
+--INSERT INTO geometry_columns VALUES ('', 'public', 'autopistas', 'the_geom', 2, 4326, 'MULTILINESTRING');
 
 
